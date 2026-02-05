@@ -1,0 +1,1352 @@
+/* ========================================
+   PREMIUM MAGAZINE-STYLE REPORT DESIGN
+   Minimalist • Elevated • Luxurious
+   ======================================== */
+
+/* Report Preview Container */
+.report-preview-container {
+  background: #e8e8e8;
+  min-height: 100vh;
+  padding: 3rem 0;
+}
+
+.report-pages-wrapper {
+  max-width: 210mm;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+/* ========================================
+   PAGE SETUP - Magazine Foundation
+   ======================================== */
+.page {
+  width: 210mm;
+  height: 297mm;
+  background: var(--paper-cream);
+  position: relative;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  page-break-after: always;
+  page-break-inside: avoid;
+  break-after: page;
+  break-inside: avoid;
+  overflow: hidden;
+}
+
+.page:last-child {
+  page-break-after: auto;
+  break-after: auto;
+}
+
+/* Left Vertical Accent Bar - Magazine Margin Indicator */
+.page::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  background: var(--brand-blue);
+}
+
+/* Top-right radial glow - full page, fades naturally to edges (no rectangular clip) */
+.page::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 120% 100% at 100% 0%,
+    rgba(27, 152, 214, 0.1) 0%,
+    rgba(27, 152, 214, 0.05) 38%,
+    transparent 65%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cover-page::after {
+  display: none;
+}
+
+/* Page Content Area with Premium Margins */
+.page-content {
+  position: relative;
+  z-index: 1;
+  padding: 48px 48px 56px 64px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+@media print {
+  .report-preview-container {
+    background: white;
+    padding: 0;
+    margin: 0;
+  }
+
+  .report-pages-wrapper {
+    max-width: none;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .page {
+    margin: 0;
+    box-shadow: none;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .page:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+}
+
+/* ========================================
+   TYPOGRAPHY - Luxury Magazine Style
+   ======================================== */
+.page h1 { 
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 42pt; 
+  font-weight: 600; 
+  line-height: 1.1;
+  color: var(--ink-black, #0a0a0a);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.page h2 { 
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 28pt; 
+  font-weight: 600; 
+  line-height: 1.15;
+  color: var(--ink-black, #0a0a0a);
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+.page h3 { 
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 16pt; 
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ink-dark, #1a1a1a);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.page h3 + p,
+.page h3 + ul {
+  margin-top: 8px;
+}
+
+.page h4 {
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 12pt;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink-dark, #1a1a1a);
+  letter-spacing: 0;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.page p { 
+  font-family: 'Inter', sans-serif;
+  font-size: 10.5pt; 
+  line-height: 1.7; 
+  color: var(--ink-medium, #3d3d3d);
+  margin: 0;
+  font-weight: 400;
+}
+
+.page .lead-text {
+  font-size: 13pt;
+  line-height: 1.6;
+  color: var(--ink-dark, #1a1a1a);
+  font-weight: 400;
+}
+
+.lead-text + .content-block {
+  margin-top: 20px;
+}
+
+.content-block + .content-block {
+  margin-top: 20px;
+}
+
+.small-text {
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--ink-light, #6b6b6b);
+  font-weight: 400;
+}
+
+.caption-text {
+  font-size: 8pt;
+  line-height: 1.4;
+  color: var(--ink-light, #6b6b6b);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ========================================
+   COLOR PALETTE
+   ======================================== */
+:root {
+  --blue-bell: #1b98d6;
+  --deep-twilight: #031a6b;
+  --hunter-green: #436436;
+  --frozen-water: #cdf7f6;
+  --brick-ember: #bc2c1a;
+
+  --primary-accent: #0a0a0a;
+  --secondary-accent: var(--deep-twilight);
+  --brand-blue: var(--blue-bell);
+  --success-color: var(--hunter-green);
+  --warning-color: var(--blue-bell);
+  --danger-color: var(--brick-ember);
+  --neutral-100: var(--frozen-water);
+  --neutral-200: #e8f5f5;
+  --neutral-300: #d0ebea;
+  --neutral-800: #1a1a1a;
+  --paper-cream: #f5faf9;
+  --callout-accent-green: var(--hunter-green);
+}
+
+/* ========================================
+   LAYOUT COMPONENTS - Minimalist
+   ======================================== */
+
+/* Premium Section Divider */
+.section-divider {
+  width: 60px;
+  height: 1px;
+  background: var(--ink-black, #0a0a0a);
+  margin: 32px 0;
+}
+
+.section-divider-thin {
+  width: 100%;
+  height: 1px;
+  background: var(--neutral-300, #e0e0de);
+  margin: 24px 0;
+}
+
+/* Info Row - Clean horizontal layout */
+.info-row {
+  display: flex;
+  align-items: baseline;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--neutral-200, #f0f0ee);
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 9pt;
+  font-weight: 500;
+  color: var(--ink-light, #6b6b6b);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  width: 140px;
+  flex-shrink: 0;
+}
+
+.info-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 12pt;
+  font-weight: 500;
+  color: var(--ink-black, #0a0a0a);
+}
+
+/* Stat Block - Magazine Number Display */
+.stat-block {
+  margin: 24px 0;
+}
+
+.stat-number {
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 56pt;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--ink-black, #0a0a0a);
+  letter-spacing: -0.03em;
+}
+
+.stat-unit {
+  font-family: 'Inter', sans-serif;
+  font-size: 14pt;
+  font-weight: 400;
+  color: var(--ink-light, #6b6b6b);
+  margin-left: 8px;
+}
+
+.stat-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 9pt;
+  font-weight: 500;
+  color: var(--ink-light, #6b6b6b);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 8px;
+}
+
+/* Status Indicator - Minimal */
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: var(--neutral-100, #fafaf8);
+  border-left: 3px solid var(--ink-black, #0a0a0a);
+}
+
+.status-indicator.positive {
+  border-left-color: var(--success-color);
+}
+
+.status-indicator.negative {
+  border-left-color: var(--danger-color);
+}
+
+.status-indicator.neutral {
+  border-left-color: var(--warning-color);
+}
+
+/* ========================================
+   HEADERS & FOOTERS - Editorial Style
+   ======================================== */
+.page-header {
+  margin: -48px -48px 28px 0;
+  padding: 20px 48px 20px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-header-content {
+  flex: 1;
+}
+
+.page-header-icon {
+  position: relative;
+  flex-shrink: 0;
+  margin-left: 16px;
+  color: var(--brand-blue);
+  opacity: 0.9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Compact header for bio-age page */
+.bio-age-page .page-header {
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+}
+
+.bio-age-page .page-header-content {
+  flex: 1;
+}
+
+.page-header-content h2 {
+  margin: 0 0 6px 0;
+}
+
+.page-header h2 {
+  margin: 0 0 6px 0;
+}
+
+.page-header .subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 11pt;
+  font-weight: 400;
+  color: var(--ink-light, #6b6b6b);
+  margin: 0;
+}
+
+.action-plan-page .page-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+}
+
+.page-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 14px 48px 16px 64px;
+  border-top: 1px solid rgba(27, 152, 214, 0.35);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 8pt;
+  color: var(--ink-light, #6b6b6b);
+  letter-spacing: 0.05em;
+}
+
+.page-footer-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-logo {
+  height: 20px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.85;
+}
+
+.footer-logo-gp {
+  height: 26px;
+}
+
+.page-number {
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 10pt;
+  font-weight: 600;
+  color: var(--ink-black, #0a0a0a);
+}
+
+/* ========================================
+   COVER PAGE - Premium Magazine Cover
+   ======================================== */
+.cover-page {
+  padding: 0;
+  background: transparent;
+  color: var(--paper-white, #ffffff);
+}
+
+.cover-page::before {
+  display: none;
+}
+
+.cover-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.cover-top {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover-hero-image {
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/cover.png');
+  background-size: cover;
+  background-position: right center; /* Align image to the right, showing right half */
+}
+
+.cover-hero-blur {
+  display: none; /* Remove blur effect for sharper image */
+}
+
+.cover-hero-overlay {
+  display: none; /* Remove overlay for cleaner image */
+}
+
+/* 2x2 Grid Layout for Cover Bottom */
+.cover-grid {
+  display: grid;
+  grid-template-columns: 75% 25%;
+  grid-template-rows: auto auto;
+}
+
+/* Q1: Top-Left - White */
+.cover-grid-q1 {
+  background: #ffffff;
+  padding: 24px 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/* Q2: Top-Right - Blue - Empty */
+.cover-grid-q2 {
+  background: #1b98d6;
+}
+
+/* Q3: Bottom-Left - Blue */
+.cover-grid-q3 {
+  background: #1b98d6;
+  padding: 28px 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+}
+
+/* Q4: Bottom-Right - White */
+.cover-grid-q4 {
+  background: #ffffff;
+  padding: 20px 28px; /* Horizontal padding matches logo left position */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+}
+
+/* Powered by text in Q4 - adjust left position here */
+.cover-grid-q4 .cover-powered {
+  margin-left: 0; /* Adjust this to move text left/right */
+}
+
+.cover-brought-by {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid #000000;
+}
+
+/* Override .page p for cover-bottom-name */
+.page p.cover-bottom-name,
+.cover-bottom-name {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 12pt !important;
+  font-weight: 400 !important;
+  color: #000000 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin: 0;
+  margin-bottom: 12px;
+}
+
+.cover-bottom-year {
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 11pt;
+  font-weight: 400;
+  color: #031a6b;
+  letter-spacing: 0.1em;
+}
+
+.cover-logo-footer {
+  /* Freely adjustable - change width/height without affecting layout */
+  position: absolute;
+  left: 20px;
+  top: 26px;
+  object-position: left center;
+}
+
+.page .cover-powered {
+  font-family: 'Inter', sans-serif;
+  font-size: 8pt;
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: rgba(107, 107, 107, 0.55);
+  margin: 0;
+}
+
+.cover-powered-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.cover-logo {
+  width: 140px;
+  height: auto;
+  object-fit: contain;
+  margin: 0;
+  padding: 0;
+}
+
+/* Preventive Health logo – larger */
+.cover-logo-small {
+  width: 220px;
+}
+
+/* GenePathDX logo – compact, less space */
+.cover-card-right .cover-partner-block:last-child .cover-logo {
+  width: 120px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.cover-title {
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 64pt;
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--ink-black, #0a0a0a);
+  margin: 0 0 10px;
+}
+
+.cover-brand-logo {
+  width: 380px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  margin: 0;
+  display: flex;
+}
+
+.cover-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 24pt;
+  font-weight: 400;
+  color: #000000;
+  max-width: 100%;
+  margin: 0;
+  text-align: left;
+}
+
+.cover-logo-partner {
+  width: 180px;
+  height: 50px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.cover-logo-partner.cover-logo-genepath {
+  /* Freely adjustable - change these values without affecting layout */
+  position: absolute;
+  left: calc(48.75%); /* 50% = start of second column, 24px = half of column-gap */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 205px;
+  height: 220px;
+}
+
+.cover-partner-block {
+  gap: 6px;
+  align-items: center;
+  text-align: center;
+}
+
+.cover-powered {
+  padding: 10px;
+}
+
+/* ========================================
+   RESULTS DISPLAY - Magazine Feature Style
+   ======================================== */
+.results-summary {
+  margin: 32px 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+.result-highlight {
+  padding: 32px 0;
+  border-bottom: 1px solid var(--neutral-200, #f0f0ee);
+}
+
+.result-highlight:last-child {
+  border-bottom: none;
+}
+
+.result-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 9pt;
+  font-weight: 500;
+  color: var(--ink-light, #6b6b6b);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+
+.result-value {
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 36pt;
+  font-weight: 600;
+  color: var(--ink-black, #0a0a0a);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.result-value.positive {
+  color: var(--success-color);
+}
+
+.result-value.negative {
+  color: var(--danger-color);
+}
+
+.result-description {
+  font-family: 'Inter', sans-serif;
+  font-size: 10.5pt;
+  font-weight: 400;
+  color: var(--ink-medium, #3d3d3d);
+  margin-top: 12px;
+  line-height: 1.6;
+}
+
+/* Comparison Display */
+.comparison-block {
+  display: flex;
+  gap: 64px;
+  margin: 40px 0;
+}
+
+.comparison-item {
+  flex: 1;
+}
+
+/* ========================================
+   CHARTS - Clean Magazine Integration
+   ======================================== */
+.chart-container {
+  width: 100%;
+  margin: 32px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chart-caption {
+  font-family: 'Inter', sans-serif;
+  font-size: 9pt;
+  font-weight: 400;
+  color: var(--ink-light, #6b6b6b);
+  text-align: center;
+  margin-top: 10px;
+  font-style: italic;
+}
+
+/* ========================================
+   BIO AGE PAGE - Stripe-quality Layout
+   ======================================== */
+.bio-age-page .page-content {
+  padding: 48px 48px 48px 64px;
+  display: flex;
+  flex-direction: column;
+}
+
+.bio-age-page .page-header {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+}
+
+.bio-age-layout {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Summary Section - Key Numbers */
+.bio-age-summary {
+  margin-bottom: 20px;
+}
+
+.bio-age-summary .comparison-block {
+  margin: 0 0 12px;
+  gap: 64px;
+}
+
+.bio-age-summary .result-label {
+  margin-bottom: 4px;
+}
+
+.bio-age-summary .result-value {
+  font-size: 40pt !important;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.bio-age-summary .result-description {
+  font-size: 9pt !important;
+  margin-top: 4px !important;
+  color: var(--ink-light, #6b6b6b);
+}
+
+.bio-age-summary .callout-box {
+  margin: 0;
+  padding: 12px 16px 12px 20px;
+}
+
+/* Chart Section */
+.bio-age-chart {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+.bio-age-chart-title {
+  font-size: 12pt;
+  margin: 0;
+  font-weight: 600;
+}
+
+.bio-age-chart-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 9pt;
+  color: var(--ink-light, #6b6b6b);
+  margin: 2px 0 8px;
+}
+
+.bio-age-chart-frame {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% + 16px);
+  margin-left: -8px;
+  margin-right: -8px;
+}
+
+.bio-age-chart-row {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  border-top: none;
+}
+
+.bio-age-chart-plot {
+  width: 100%;
+  height: 100%;
+}
+
+/* Legend */
+.bio-age-chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin: 0;
+  padding: 8px 0 4px;
+  border-top: 1px solid var(--neutral-200, #f0f0ee);
+}
+
+.bio-age-chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 7pt;
+  color: var(--ink-light, #6b6b6b);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.bio-age-chart-legend-marker {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+}
+
+.bio-age-chart-legend-marker.population {
+  background: var(--deep-twilight);
+  opacity: 0.3;
+  border-radius: 50%;
+}
+
+.bio-age-chart-legend-marker.user {
+  background: #b3261e;
+  transform: rotate(45deg);
+  width: 7px;
+  height: 7px;
+}
+
+.bio-age-chart-legend-marker.baseline {
+  border-top: 1.5px dashed #0a0a0a;
+  height: 0;
+  width: 14px;
+}
+
+/* Caption */
+.bio-age-chart .chart-caption {
+  margin: 2px 0 0;
+  padding: 0;
+  text-align: center;
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-light, #6b6b6b);
+}
+
+
+/* ========================================
+   INFO CARDS - Removed boxes, clean rows
+   ======================================== */
+.info-card {
+  background: transparent;
+  border: none;
+  border-left: none;
+  padding: 20px 0;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--neutral-200, #f0f0ee);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.info-card:last-child {
+  border-bottom: none;
+}
+
+/* Icon styling - more subtle */
+.icon-circle {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-black, #0a0a0a);
+  background: var(--neutral-100, #fafaf8);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.icon-circle.orange,
+.icon-circle.green,
+.icon-circle.blue,
+.icon-circle.purple {
+  background: var(--neutral-100, #fafaf8);
+  color: var(--ink-black, #0a0a0a);
+}
+
+/* ========================================
+   CALLOUT BOXES - Minimal with left accent
+   ======================================== */
+.callout-box {
+  padding: 24px 24px 24px 28px;
+  background: rgba(67, 100, 54, 0.06);
+  border-left: 3px solid var(--callout-accent-green);
+  margin: 24px 0;
+}
+
+.callout-box.success,
+.callout-box.warning,
+.callout-box.danger,
+.callout-box.info {
+  border-left-color: var(--callout-accent-green);
+}
+
+/* Stacked callout boxes - reduce spacing between them */
+.callout-stack .callout-box {
+  margin: 0 0 60px 0;
+}
+
+.callout-stack .callout-box:last-child {
+  margin-bottom: 12px
+;
+}
+
+/* Callout with QR code – text left, QR right constrained */
+.callout-box-with-qr {
+  padding: 28px 28px 28px 32px;
+  min-height: 140px;
+}
+
+.callout-box-with-qr .callout-box-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  min-height: 0;
+}
+
+.callout-box-with-qr .callout-box-text {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+
+.callout-box-with-qr .callout-box-text .callout-text,
+.callout-box-with-qr .callout-box-text .callout-qr-cta {
+  text-align: left;
+}
+
+.callout-box-with-qr .callout-box-text p + p {
+  margin-top: 12px;
+}
+
+.callout-box-with-qr .callout-box-qr {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 160px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  background: white;
+  overflow: hidden;
+}
+
+.callout-box-with-qr .callout-qr-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.callout-qr-cta {
+  margin: 22px 0 0;
+  padding: 0;
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 9pt;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--callout-accent-green);
+  text-align: left;
+  background: transparent;
+}
+
+.callout-qr-cta::before {
+  content: none;
+}
+
+/* ========================================
+   GRID LAYOUTS - Editorial Magazine
+   ======================================== */
+.two-column-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin: 32px 0;
+}
+
+.recommendation-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin: 32px 0;
+}
+
+.recommendation-item {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* ========================================
+   CONTENT BLOCKS - Editorial Sections
+   ======================================== */
+.content-block {
+  margin-bottom: 28px;
+}
+
+.content-block:last-child {
+  margin-bottom: 0;
+}
+.mt-3-tight { margin-top: 28px; }
+
+.bullet-list,
+.numbered-list {
+  margin: 16px 0 0 0;
+  padding: 0;
+}
+
+.bullet-list li {
+  list-style: disc;
+  position: relative;
+  padding-left: 0;
+  margin-left: 18px;
+  margin-bottom: 10px;
+  color: var(--ink-medium, #3d3d3d);
+  font-size: 10.5pt;
+  line-height: 1.6;
+}
+
+.bullet-list li::marker {
+  color: var(--ink-black, #0a0a0a);
+}
+
+.numbered-list {
+  list-style: none;
+  counter-reset: listCounter;
+}
+
+.numbered-list li {
+  counter-increment: listCounter;
+  padding-left: 24px;
+  position: relative;
+  margin-bottom: 12px;
+  color: var(--ink-medium, #3d3d3d);
+  font-size: 10.5pt;
+  line-height: 1.6;
+}
+
+.numbered-list li::before {
+  content: counter(listCounter) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: 'Instrument Sans', sans-serif;
+  font-weight: 600;
+  color: var(--ink-black, #0a0a0a);
+}
+
+.two-column-text {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 40px;
+  margin: 24px 0;
+}
+
+/* Three-column recommendations */
+.three-column-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin: 16px 0;
+}
+
+.recommendation-card {
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.recommendation-text {
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--ink-light, #6b6b6b);
+  margin-top: 16px;
+}
+
+.faq-page .page-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+}
+
+.faq-page .two-column-grid {
+  margin: 12px 0;
+}
+
+.faq-page .callout-box {
+  margin: 0 0 12px;
+}
+
+.callout-text {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 10pt;
+  font-weight: 400;
+  color: var(--ink-dark, #1a1a1a);
+  line-height: 1.5;
+}
+
+.callout-text strong {
+  font-family: 'Instrument Sans', sans-serif;
+  font-weight: 600;
+}
+
+.callout-text + .callout-text {
+  margin-top: 8px;
+}
+
+.callout-heading {
+  text-transform: none;
+  letter-spacing: 0;
+  margin-bottom: 14px;
+}
+
+.callout-box h4 {
+  text-transform: none;
+  letter-spacing: 0;
+  margin-bottom: 14px;
+}
+
+/* ========================================
+   PLACEHOLDERS - Minimalist Infographics
+   ======================================== */
+.infographic-placeholder {
+  border: 1px solid var(--neutral-300, #e0e0de);
+  background: var(--neutral-100, #fafaf8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--ink-light, #6b6b6b);
+  font-size: 9pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  min-height: 140px;
+  padding: 16px;
+}
+
+.infographic-frame {
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.infographic-frame.tall {
+  min-height: 220px;
+}
+
+.infographic-frame.short {
+  height: 120px;
+}
+
+.infographic-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border: none;
+  outline: none;
+}
+
+.two-column-text .infographic-frame,
+.two-column-text .infographic-image {
+  border: none !important;
+}
+
+.infographic-image.lifestyle-image {
+  object-position: 50% 70%;
+}
+
+.infographic-placeholder.tall {
+  min-height: 220px;
+}
+
+.infographic-placeholder.short {
+  min-height: 100px;
+}
+
+.infographic-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.infographic-strip {
+  border: 1px dashed var(--neutral-300, #e0e0de);
+  background: transparent;
+  color: var(--ink-light, #6b6b6b);
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 10px 12px;
+  text-align: center;
+}
+
+/* ========================================
+   TAGS - Minimalist Labels
+   ======================================== */
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.tag {
+  border: 1px solid var(--neutral-300, #e0e0de);
+  padding: 6px 10px;
+  font-size: 8.5pt;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-light, #6b6b6b);
+}
+
+/* ========================================
+   FAQ STYLING - Editorial Q&A
+   ======================================== */
+.faq-item {
+  margin-bottom: 0;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--neutral-200, #f0f0ee);
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+.faq-item h3 {
+  color: var(--ink-black, #0a0a0a);
+  margin-bottom: 12px;
+  font-size: 13pt;
+}
+
+.faq-item p {
+  color: var(--ink-medium, #3d3d3d);
+}
+
+/* ========================================
+   REFERENCES - Magazine Bibliography
+   ======================================== */
+.references-list {
+  column-count: 2;
+  column-gap: 32px;
+  font-size: 8pt;
+  line-height: 1.45;
+  color: var(--ink-light, #6b6b6b);
+}
+
+.references-list li {
+  margin-bottom: 14px;
+  break-inside: avoid;
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+.mt-0 { margin-top: 0; }
+.mt-1 { margin-top: 8px; }
+.mt-2 { margin-top: 16px; }
+.mt-3 { margin-top: 24px; }
+.mt-4 { margin-top: 32px; }
+.mt-5 { margin-top: 40px; }
+.mt-6 { margin-top: 48px; }
+
+.mb-0 { margin-bottom: 0; }
+.mb-1 { margin-bottom: 8px; }
+.mb-2 { margin-bottom: 16px; }
+.mb-3 { margin-bottom: 24px; }
+.mb-4 { margin-bottom: 32px; }
+.mb-5 { margin-bottom: 40px; }
+.mb-6 { margin-bottom: 48px; }
+
+.text-positive { color: var(--success-color); }
+.text-negative { color: var(--danger-color); }
+.text-neutral { color: var(--warning-color); }
+.text-muted { color: var(--ink-light, #6b6b6b); }
+
+/* ========================================
+   TAILWIND OVERRIDES - Sharp Corners
+   ======================================== */
+.rounded-lg,
+.rounded-xl,
+.rounded-2xl,
+.rounded-full,
+.rounded-md,
+.rounded-sm,
+.rounded {
+  border-radius: 0 !important;
+}
