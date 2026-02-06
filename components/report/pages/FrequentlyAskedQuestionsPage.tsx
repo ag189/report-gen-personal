@@ -34,8 +34,7 @@ export default function FrequentlyAskedQuestionsPage() {
           <div className="faq-item">
             <h3>Is this genetic testing?</h3>
             <p>
-              No. We analyze epigenetic markers, not your DNA sequence. Epigenetic
-              changes are reversible and influenced by lifestyle.
+            Not exactly. Conventional genetic tests read the DNA sequence itself. This is an epigenetic test — it measures chemical modifications on top of the genetic code that influence how genes are expressed. Unlike your DNA sequence, which stays fixed (except in some medical conditions), epigenetic marks respond to environment and lifestyle, and can often be reversed.
             </p>
           </div>
         </div>
