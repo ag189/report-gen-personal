@@ -10,7 +10,12 @@ interface PaceOfAgingPageProps {
 }
 
 export default function PaceOfAgingPage({ data }: PaceOfAgingPageProps) {
-  const calloutClass = data.paceIsLower ? 'success' : 'danger';
+  // Auto-derived from inputs
+  const pacePercentDiff = data.expectedPACE > 0
+    ? Number((Math.abs((data.expectedPACE - data.dunedinPACE) / data.expectedPACE) * 100).toFixed(1))
+    : 0;
+  const paceIsLower = data.dunedinPACE < data.expectedPACE;
+  const calloutClass = paceIsLower ? 'success' : 'danger';
 
   return (
     <PageWrapper pageNumber={4}>
@@ -38,7 +43,7 @@ export default function PaceOfAgingPage({ data }: PaceOfAgingPageProps) {
         </div>
 
         <div className="comparison-item">
-          <p className="result-label">Expected at Age {data.chronologicalAge.toFixed(0)}</p>
+          <p className="result-label">Expected at Age {(data.chronologicalAge + 1).toFixed(0)}</p>
           <p className="result-value" style={{ fontSize: '28pt', color: '#6b6b6b' }}>
             {data.expectedPACE.toFixed(3)}
           </p>
@@ -60,7 +65,7 @@ export default function PaceOfAgingPage({ data }: PaceOfAgingPageProps) {
             fontFamily: "'Instrument Sans', sans-serif",
             fontWeight: 600
           }}>
-            {data.pacePercentDiff}% {data.paceIsLower ? 'lower' : 'higher'}
+            {pacePercentDiff}% {paceIsLower ? 'lower' : 'higher'}
           </span>
           {' '}than the average person your age
         </p>

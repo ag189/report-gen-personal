@@ -32,15 +32,17 @@ export default function BioAgeScatterPlot({ chronologicalAge, biologicalAge }: B
 
     return (
       <g>
+        {/* Upper-left triangle: bio age > chrono age = faster aging (light red) */}
         <polygon
           points={`${x20},${y80} ${x80},${y80} ${x20},${y20}`}
           fill="#bc2c1a"
-          opacity={0.05}
+          opacity={0.08}
         />
+        {/* Lower-right triangle: bio age < chrono age = slower aging (light green) */}
         <polygon
           points={`${x20},${y20} ${x80},${y20} ${x80},${y80}`}
           fill="#436436"
-          opacity={0.05}
+          opacity={0.10}
         />
         {/* Zone labels inside the chart */}
         <text
@@ -49,7 +51,8 @@ export default function BioAgeScatterPlot({ chronologicalAge, biologicalAge }: B
           fill="#bc2c1a"
           fontSize="7"
           fontFamily="'Inter', sans-serif"
-          fontWeight="500"
+          fontWeight="600"
+          opacity={0.7}
           style={{ textTransform: 'uppercase', letterSpacing: '0.06em' }}
         >
           Faster aging
@@ -60,7 +63,8 @@ export default function BioAgeScatterPlot({ chronologicalAge, biologicalAge }: B
           fill="#436436"
           fontSize="7"
           fontFamily="'Inter', sans-serif"
-          fontWeight="500"
+          fontWeight="600"
+          opacity={0.7}
           style={{ textTransform: 'uppercase', letterSpacing: '0.06em' }}
         >
           Slower aging

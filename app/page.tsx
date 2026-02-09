@@ -18,19 +18,14 @@ const SAMPLE_DATA: ReportData = {
   chronologicalAge: 70.56,
   biologicalAge: 67.26,
   dunedinPACE: 1.001,
-  ageDifference: 3.30,
-  percentDifference: 4.67,
-  isYounger: true,
   expectedPACE: 1.092,
-  pacePercentDiff: 8.3,
-  paceIsLower: true,
   generatedDate: new Date().toISOString(),
   reportId: "TA-SAMPLE-12345"
 };
 
 export default function Home() {
-  const [isPreviewMode, setIsPreviewMode] = useState(true); // Start in preview mode
-  const [reportData, setReportData] = useState<ReportData>(SAMPLE_DATA); // Pre-populated data
+  const [isPreviewMode, setIsPreviewMode] = useState(false); // Start in form mode
+  const [reportData, setReportData] = useState<ReportData | null>(null);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
   const handlePreview = (data: ReportData) => {
@@ -79,7 +74,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      {!isPreviewMode ? (
+      {!isPreviewMode || !reportData ? (
         // Form View
         <div className="container mx-auto px-4 py-8">
           <div className="text-center mb-8">
@@ -91,7 +86,7 @@ export default function Home() {
             </p>
           </div>
 
-          <DataEntryForm onPreview={handlePreview} />
+          <DataEntryForm onPreview={handlePreview} initialData={reportData ?? undefined} />
         </div>
       ) : (
         // Preview View

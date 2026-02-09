@@ -11,6 +11,11 @@ interface BiologicalAgePageProps {
 }
 
 export default function BiologicalAgePage({ data }: BiologicalAgePageProps) {
+  // Auto-derived from inputs
+  const ageDifference = Number((data.chronologicalAge - data.biologicalAge).toFixed(2));
+  const percentDifference = Number(((ageDifference / data.chronologicalAge) * 100).toFixed(2));
+  const isYounger = ageDifference > 0;
+
   return (
     <PageWrapper pageNumber={3} className="bio-age-page">
       <PageHeader
@@ -30,16 +35,16 @@ export default function BiologicalAgePage({ data }: BiologicalAgePageProps) {
 
             <div className="comparison-item">
               <p className="result-label">Biological Age</p>
-              <p className={`result-value ${data.isYounger ? 'positive' : 'negative'}`}>
+              <p className={`result-value ${isYounger ? 'positive' : 'negative'}`}>
                 {formatAge(data.biologicalAge)}
               </p>
               <p className="result-description">Based on PCGrimAge</p>
             </div>
           </div>
 
-          <div className={`callout-box ${data.isYounger ? 'success' : 'danger'}`}>
+          <div className={`callout-box ${isYounger ? 'success' : 'danger'}`}>
             <p className="callout-text">
-              You are <strong>{data.ageDifference} years ({data.percentDifference}%) {data.isYounger ? 'younger' : 'older'}</strong> than your chronological age
+              You are <strong>{Math.abs(ageDifference)} years ({Math.abs(percentDifference)}%) {isYounger ? 'younger' : 'older'}</strong> than your chronological age
             </p>
           </div>
         </div>

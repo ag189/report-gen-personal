@@ -7,20 +7,11 @@ export interface ReportData {
   sampleType: string;            // e.g., "EDTA Blood"
   kitId: string;
 
-  // Test Results
+  // Test Results (all manual inputs)
   chronologicalAge: number;      // e.g., 70.56
   biologicalAge: number;         // e.g., 67.26
   dunedinPACE: number;          // e.g., 1.001
-
-  // Biological Age Comparison (manually entered)
-  ageDifference: number;         // e.g., 3.30 years
-  percentDifference: number;     // e.g., 4.67%
-  isYounger: boolean;            // true = younger, false = older
-
-  // Pace of Aging Comparison (manually entered)
-  expectedPACE: number;          // Expected DunedinPACE at this age
-  pacePercentDiff: number;       // e.g., 8.2%
-  paceIsLower: boolean;          // true = lower than average, false = higher
+  expectedPACE: number;          // Expected DunedinPACE at this age, e.g., 1.092
 
   // Metadata
   generatedDate: string;         // ISO date string

@@ -3,38 +3,53 @@
 import React, { useState } from 'react';
 import { ReportData } from '@/types/report.types';
 import { calculateAgeFromDOB, generateReportId } from '@/lib/formatters';
-import { AlertCircle, User, Activity, BarChart3 } from 'lucide-react';
+import { AlertCircle, User, Activity } from 'lucide-react';
+
+const EMPTY_FORM: Partial<ReportData> = {
+  name: '',
+  dateOfBirth: '',
+  age: 0,
+  gender: 'Male',
+  sampleType: '',
+  kitId: '',
+  chronologicalAge: 0,
+  biologicalAge: 0,
+  dunedinPACE: 0,
+  expectedPACE: 0,
+  generatedDate: new Date().toISOString(),
+};
 
 interface DataEntryFormProps {
   onPreview: (data: ReportData) => void;
+  initialData?: Partial<ReportData>;
 }
 
-export default function DataEntryForm({ onPreview }: DataEntryFormProps) {
-  const [formData, setFormData] = useState<Partial<ReportData>>({
-    name: 'John Doe',
-    dateOfBirth: '1953-06-15',
-    age: 70,
-    gender: 'Male',
-    sampleType: 'EDTA Blood',
-    kitId: 'TEST123456',
-    chronologicalAge: 70.56,
-    biologicalAge: 67.26,
-    dunedinPACE: 1.001,
-    ageDifference: 3.30,
-    percentDifference: 4.67,
-    isYounger: true,
-    expectedPACE: 1.092,
-    pacePercentDiff: 8.3,
-    paceIsLower: true,
-    generatedDate: new Date().toISOString(),
-  });
+export default function DataEntryForm({ onPreview, initialData }: DataEntryFormProps) {
+  const [formData, setFormData] = useState<Partial<ReportData>>(
+    initialData ?? { ...EMPTY_FORM }
+  );
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [warnings, setWarnings] = useState<Record<string, string>>({});
 
+  // Auto-derived: Biological Age Comparison
+  const chronoAge = formData.chronologicalAge || 0;
+  const bioAge = formData.biologicalAge || 0;
+  const ageDifference = chronoAge && bioAge ? Number((chronoAge - bioAge).toFixed(2)) : 0;
+  const percentDifference = chronoAge && bioAge ? Number(((ageDifference / chronoAge) * 100).toFixed(2)) : 0;
+  const isYounger = ageDifference > 0;
+
+  // Auto-derived: Pace of Aging Comparison
+  const dunedinPACE = formData.dunedinPACE || 0;
+  const expectedPACE = formData.expectedPACE || 0;
+  const pacePercentDiff = dunedinPACE && expectedPACE
+    ? Number((Math.abs((expectedPACE - dunedinPACE) / expectedPACE) * 100).toFixed(1))
+    : 0;
+  const paceIsLower = dunedinPACE < expectedPACE;
+
   const handleChange = (field: keyof ReportData, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    
+
     // Clear error for this field
     if (errors[field]) {
       setErrors(prev => {
@@ -48,12 +63,12 @@ export default function DataEntryForm({ onPreview }: DataEntryFormProps) {
     if (field === 'dateOfBirth' && value) {
       const calculatedAge = calculateAgeFromDOB(value);
       setFormData(prev => ({ ...prev, age: calculatedAge }));
-      
+
       // Check if chronological age matches
       if (formData.chronologicalAge && Math.abs(calculatedAge - formData.chronologicalAge) > 0.5) {
-        setWarnings(prev => ({ 
-          ...prev, 
-          chronologicalAge: `Chronological age (${formData.chronologicalAge}) doesn't match calculated age from DOB (${calculatedAge})` 
+        setWarnings(prev => ({
+          ...prev,
+          chronologicalAge: `Chronological age (${formData.chronologicalAge}) doesn't match calculated age from DOB (${calculatedAge})`
         }));
       } else {
         setWarnings(prev => {
@@ -80,6 +95,9 @@ export default function DataEntryForm({ onPreview }: DataEntryFormProps) {
     if (!formData.dunedinPACE || formData.dunedinPACE <= 0) {
       newErrors.dunedinPACE = 'Valid DunedinPACE score is required';
     }
+    if (!formData.expectedPACE || formData.expectedPACE <= 0) {
+      newErrors.expectedPACE = 'Valid expected DunedinPACE is required';
+    }
 
     // Warnings
     const newWarnings: Record<string, string> = {};
@@ -97,7 +115,7 @@ export default function DataEntryForm({ onPreview }: DataEntryFormProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (validate()) {
       const reportData: ReportData = {
         ...formData as ReportData,
@@ -109,24 +127,7 @@ export default function DataEntryForm({ onPreview }: DataEntryFormProps) {
   };
 
   const handleReset = () => {
-    setFormData({
-      name: 'John Doe',
-      dateOfBirth: '1953-06-15',
-      age: 70,
-      gender: 'Male',
-      sampleType: 'EDTA Blood',
-      kitId: 'TEST123456',
-      chronologicalAge: 70.56,
-      biologicalAge: 67.26,
-      dunedinPACE: 1.001,
-      ageDifference: 3.30,
-      percentDifference: 4.67,
-      isYounger: true,
-      expectedPACE: 1.092,
-      pacePercentDiff: 8.3,
-      paceIsLower: true,
-      generatedDate: new Date().toISOString(),
-    });
+    setFormData({ ...EMPTY_FORM, generatedDate: new Date().toISOString() });
     setErrors({});
     setWarnings({});
   };
@@ -259,7 +260,7 @@ export default function DataEntryForm({ onPreview }: DataEntryFormProps) {
           Test Results
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Chronological Age */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -346,74 +347,8 @@ export default function DataEntryForm({ onPreview }: DataEntryFormProps) {
               </p>
             )}
           </div>
-        </div>
-      </div>
 
-      {/* Biological Age Comparison Section */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-          <BarChart3 className="w-6 h-6 text-purple-600" />
-          Biological Age Comparison
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Age Difference */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Age Difference (years) *
-            </label>
-            <input
-              type="number"
-              step="0.01"
-              value={formData.ageDifference ?? ''}
-              onChange={(e) => handleChange('ageDifference', parseFloat(e.target.value) || 0)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="e.g., 3.30"
-            />
-          </div>
-
-          {/* Percent Difference */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Percent Difference (%) *
-            </label>
-            <input
-              type="number"
-              step="0.01"
-              value={formData.percentDifference ?? ''}
-              onChange={(e) => handleChange('percentDifference', parseFloat(e.target.value) || 0)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="e.g., 4.67"
-            />
-          </div>
-
-          {/* Is Younger */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Younger or Older? *
-            </label>
-            <select
-              title="Younger or Older"
-              value={formData.isYounger ? 'younger' : 'older'}
-              onChange={(e) => handleChange('isYounger', e.target.value === 'younger')}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="younger">Younger than chronological age</option>
-              <option value="older">Older than chronological age</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      {/* Pace of Aging Comparison Section */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-          <Activity className="w-6 h-6 text-orange-600" />
-          Pace of Aging Comparison
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Expected PACE */}
+          {/* Expected DunedinPACE */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Expected DunedinPACE at Age *
@@ -421,44 +356,46 @@ export default function DataEntryForm({ onPreview }: DataEntryFormProps) {
             <input
               type="number"
               step="0.001"
-              value={formData.expectedPACE ?? ''}
+              value={formData.expectedPACE || ''}
               onChange={(e) => handleChange('expectedPACE', parseFloat(e.target.value) || 0)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                errors.expectedPACE ? 'border-red-500' : 'border-gray-300'
+              }`}
               placeholder="e.g., 1.092"
             />
-          </div>
-
-          {/* Pace Percent Diff */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Pace Percent Difference (%) *
-            </label>
-            <input
-              type="number"
-              step="0.1"
-              value={formData.pacePercentDiff ?? ''}
-              onChange={(e) => handleChange('pacePercentDiff', parseFloat(e.target.value) || 0)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="e.g., 8.3"
-            />
-          </div>
-
-          {/* Pace Is Lower */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Lower or Higher than average? *
-            </label>
-            <select
-              title="Lower or Higher than average"
-              value={formData.paceIsLower ? 'lower' : 'higher'}
-              onChange={(e) => handleChange('paceIsLower', e.target.value === 'lower')}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="lower">Lower than average (aging slower)</option>
-              <option value="higher">Higher than average (aging faster)</option>
-            </select>
+            {errors.expectedPACE && (
+              <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
+                <AlertCircle className="w-4 h-4" />
+                {errors.expectedPACE}
+              </p>
+            )}
           </div>
         </div>
+
+        {/* Auto-calculated preview */}
+        {(chronoAge > 0 && bioAge > 0) || (dunedinPACE > 0 && expectedPACE > 0) ? (
+          <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Auto-calculated values (preview)</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              {chronoAge > 0 && bioAge > 0 && (
+                <div>
+                  <p className="text-gray-500 mb-1">Biological Age Comparison</p>
+                  <p className="font-medium text-gray-800">
+                    {Math.abs(ageDifference)} years ({Math.abs(percentDifference)}%) {isYounger ? 'younger' : 'older'}
+                  </p>
+                </div>
+              )}
+              {dunedinPACE > 0 && expectedPACE > 0 && (
+                <div>
+                  <p className="text-gray-500 mb-1">Pace of Aging Comparison</p>
+                  <p className="font-medium text-gray-800">
+                    {pacePercentDiff}% {paceIsLower ? 'lower' : 'higher'} than expected
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        ) : null}
       </div>
 
       {/* Action Buttons */}
