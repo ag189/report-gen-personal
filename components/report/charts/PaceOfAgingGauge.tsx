@@ -67,13 +67,27 @@ export default function PaceOfAgingGauge({ dunedinPACE }: PaceOfAgingGaugeProps)
           }}></div>
         </div>
 
-        {/* Position indicator - sharp triangle */}
+        {/* Position indicator */}
         <div style={{
           position: 'absolute',
           left: `${percentage}%`,
           top: '50%',
           transform: 'translate(-50%, -50%)'
         }}>
+          {/* "YOU" label above the marker */}
+          <div style={{
+            position: 'absolute',
+            left: '50%',
+            bottom: '100%',
+            transform: 'translateX(-50%)',
+            marginBottom: '12px',
+            fontFamily: "'Inter', sans-serif",
+            fontSize: '9pt',
+            fontWeight: 600,
+            color: '#0a0a0a',
+            letterSpacing: '0.05em',
+            whiteSpace: 'nowrap'
+          }}>YOU</div>
           {/* Vertical line */}
           <div style={{
             width: '2px',

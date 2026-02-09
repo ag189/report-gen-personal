@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { ReportData } from '@/types/report.types';
 import { calculateAgeFromDOB, generateReportId } from '@/lib/formatters';
-import { AlertCircle, User, Calendar, Users, Droplet, Barcode, Activity, Clock } from 'lucide-react';
+import { AlertCircle, User, Activity, BarChart3 } from 'lucide-react';
 
 interface DataEntryFormProps {
   onPreview: (data: ReportData) => void;
@@ -20,6 +20,12 @@ export default function DataEntryForm({ onPreview }: DataEntryFormProps) {
     chronologicalAge: 70.56,
     biologicalAge: 67.26,
     dunedinPACE: 1.001,
+    ageDifference: 3.30,
+    percentDifference: 4.67,
+    isYounger: true,
+    expectedPACE: 1.092,
+    pacePercentDiff: 8.3,
+    paceIsLower: true,
     generatedDate: new Date().toISOString(),
   });
 
@@ -113,6 +119,12 @@ export default function DataEntryForm({ onPreview }: DataEntryFormProps) {
       chronologicalAge: 70.56,
       biologicalAge: 67.26,
       dunedinPACE: 1.001,
+      ageDifference: 3.30,
+      percentDifference: 4.67,
+      isYounger: true,
+      expectedPACE: 1.092,
+      pacePercentDiff: 8.3,
+      paceIsLower: true,
       generatedDate: new Date().toISOString(),
     });
     setErrors({});
@@ -333,6 +345,118 @@ export default function DataEntryForm({ onPreview }: DataEntryFormProps) {
                 {warnings.dunedinPACE}
               </p>
             )}
+          </div>
+        </div>
+      </div>
+
+      {/* Biological Age Comparison Section */}
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+          <BarChart3 className="w-6 h-6 text-purple-600" />
+          Biological Age Comparison
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Age Difference */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Age Difference (years) *
+            </label>
+            <input
+              type="number"
+              step="0.01"
+              value={formData.ageDifference ?? ''}
+              onChange={(e) => handleChange('ageDifference', parseFloat(e.target.value) || 0)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="e.g., 3.30"
+            />
+          </div>
+
+          {/* Percent Difference */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Percent Difference (%) *
+            </label>
+            <input
+              type="number"
+              step="0.01"
+              value={formData.percentDifference ?? ''}
+              onChange={(e) => handleChange('percentDifference', parseFloat(e.target.value) || 0)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="e.g., 4.67"
+            />
+          </div>
+
+          {/* Is Younger */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Younger or Older? *
+            </label>
+            <select
+              title="Younger or Older"
+              value={formData.isYounger ? 'younger' : 'older'}
+              onChange={(e) => handleChange('isYounger', e.target.value === 'younger')}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="younger">Younger than chronological age</option>
+              <option value="older">Older than chronological age</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* Pace of Aging Comparison Section */}
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+          <Activity className="w-6 h-6 text-orange-600" />
+          Pace of Aging Comparison
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Expected PACE */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Expected DunedinPACE at Age *
+            </label>
+            <input
+              type="number"
+              step="0.001"
+              value={formData.expectedPACE ?? ''}
+              onChange={(e) => handleChange('expectedPACE', parseFloat(e.target.value) || 0)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="e.g., 1.092"
+            />
+          </div>
+
+          {/* Pace Percent Diff */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Pace Percent Difference (%) *
+            </label>
+            <input
+              type="number"
+              step="0.1"
+              value={formData.pacePercentDiff ?? ''}
+              onChange={(e) => handleChange('pacePercentDiff', parseFloat(e.target.value) || 0)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="e.g., 8.3"
+            />
+          </div>
+
+          {/* Pace Is Lower */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Lower or Higher than average? *
+            </label>
+            <select
+              title="Lower or Higher than average"
+              value={formData.paceIsLower ? 'lower' : 'higher'}
+              onChange={(e) => handleChange('paceIsLower', e.target.value === 'lower')}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="lower">Lower than average (aging slower)</option>
+              <option value="higher">Higher than average (aging faster)</option>
+            </select>
           </div>
         </div>
       </div>

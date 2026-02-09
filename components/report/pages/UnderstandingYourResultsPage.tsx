@@ -51,6 +51,9 @@ export default function UnderstandingYourResultsPage() {
           Biological age shows where you are today. Pace of aging shows how fast you
           are aging right now. A pace of 1.0 means one biological year per calendar
           year. Lower is slower, higher is faster.
+          <br></br>
+          <br></br>
+          A pace of 1.0 (with small adjustments as you age further) means one biological year per calendar year. A pace of 0.8 means you are aging 20% slower than average, while a pace of 1.2 means you are aging 20% faster.
         </p>
       </div>
 

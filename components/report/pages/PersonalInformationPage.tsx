@@ -79,7 +79,7 @@ export default function PersonalInformationPage({ data }: PersonalInformationPag
         </p>
       </div>
 
-      {/* About block */}
+      {/* Contact block */}
       <div className="section-divider" style={{ marginTop: '32px' }}></div>
       <div style={{ marginTop: '20px' }}>
         <p style={{
@@ -89,36 +89,56 @@ export default function PersonalInformationPage({ data }: PersonalInformationPag
           color: '#6b6b6b',
           textTransform: 'uppercase',
           letterSpacing: '0.1em',
-          marginBottom: '8px'
+          marginBottom: '16px'
         }}>
          CONTACT
         </p>
-        <p style={{
-          fontFamily: "'Inter', sans-serif",
-          fontSize: '10pt',
-          fontWeight: 400,
-          color: '#3d3d3d',
-          lineHeight: 1.7,
-          margin: 0
-        }}>
-          GenePath Diagnostics<br/>
-          7th Floor, Manikchand Galleria, <br/>
-          Model Colony, Shivajinagar,<br/>
-          Pune - 411016<br/>
-          Phone: +91 20 6901 5000<br/>
-          <br/>
-        </p>
-        <p style={{
-          fontFamily: "'Inter', sans-serif",
-          fontSize: '9pt',
-          fontWeight: 500,
-          color: '#6b6b6b',
-          marginTop: '10px',
-          marginBottom: 0
-        }}>
-          GenePath Diagnostics India Private Limited  <br/>
-          CIN: U74999PN2019PTC181759
-        </p>
+        <div style={{ display: 'flex', gap: '40px' }}>
+          {/* GenePath Diagnostics */}
+          <div style={{ flex: 1 }}>
+            <p style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '10pt',
+              fontWeight: 400,
+              color: '#3d3d3d',
+              lineHeight: 1.7,
+              margin: 0
+            }}>
+              GenePath Diagnostics<br/>
+              7th Floor, Manikchand Galleria,<br/>
+              Model Colony, Shivajinagar,<br/>
+              Pune - 411016<br/>
+              Phone: +91 20 6901 5000
+            </p>
+            <p style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '9pt',
+              fontWeight: 500,
+              color: '#6b6b6b',
+              marginTop: '10px',
+              marginBottom: 0
+            }}>
+              GenePath Diagnostics India Private Limited<br/>
+              CIN: U74999PN2019PTC181759
+            </p>
+          </div>
+          {/* PreventiveHealth.ai */}
+          <div style={{ flex: 1 }}>
+            <p style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '10pt',
+              fontWeight: 400,
+              color: '#3d3d3d',
+              lineHeight: 1.7,
+              margin: 0
+            }}>
+              PreventiveHealth.ai Inc.<br/>
+              25252 W Fremont Rd,<br/>
+              Los Altos HLS, California 94022,<br/>
+              USA
+            </p>
+          </div>
+        </div>
       </div>
     </PageWrapper>
   );

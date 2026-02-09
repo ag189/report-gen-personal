@@ -18,6 +18,12 @@ const SAMPLE_DATA: ReportData = {
   chronologicalAge: 70.56,
   biologicalAge: 67.26,
   dunedinPACE: 1.001,
+  ageDifference: 3.30,
+  percentDifference: 4.67,
+  isYounger: true,
+  expectedPACE: 1.092,
+  pacePercentDiff: 8.3,
+  paceIsLower: true,
   generatedDate: new Date().toISOString(),
   reportId: "TA-SAMPLE-12345"
 };

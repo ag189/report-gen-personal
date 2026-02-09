@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { ReportData } from '@/types/report.types';
-import { calculateMetrics } from '@/lib/calculations';
 import CoverPage from './pages/CoverPage';
 import PersonalInformationPage from './pages/PersonalInformationPage';
 import BiologicalAgePage from './pages/BiologicalAgePage';
@@ -21,15 +20,13 @@ interface ReportPreviewProps {
 }
 
 export default function ReportPreview({ data }: ReportPreviewProps) {
-  const metrics = calculateMetrics(data);
-
   return (
     <div className="report-preview-container">
       <div className="report-pages-wrapper">
         <CoverPage data={data} />
         <PersonalInformationPage data={data} />
-        <BiologicalAgePage data={data} metrics={metrics} />
-        <PaceOfAgingPage data={data} metrics={metrics} />
+        <BiologicalAgePage data={data} />
+        <PaceOfAgingPage data={data} />
         <UnderstandingYourResultsPage />
         <ScienceBehindAgePathPage />
         <RecommendationsPage />
