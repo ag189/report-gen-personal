@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, ResponsiveContainer, ReferenceLine, Customized, LabelList } from 'recharts';
+import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, ResponsiveContainer, ReferenceLine, ReferenceArea, LabelList } from 'recharts';
 
 interface BioAgeScatterPlotProps {
   chronologicalAge: number;
@@ -17,61 +17,12 @@ export default function BioAgeScatterPlot({ chronologicalAge, biologicalAge }: B
   // User's data point
   const userData = [{ chronoAge: chronologicalAge, bioAge: biologicalAge, label: 'YOU' }];
 
-  const QuadrantOverlay: React.FC<any> = ({ xAxisMap, yAxisMap }) => {
-    if (!xAxisMap || !yAxisMap) return null;
-    const xAxis = Object.values(xAxisMap)[0] as { scale?: (value: number) => number };
-    const yAxis = Object.values(yAxisMap)[0] as { scale?: (value: number) => number };
-    if (!xAxis || !yAxis || !xAxis.scale || !yAxis.scale) return null;
-
-    const xScale = xAxis.scale;
-    const yScale = yAxis.scale;
-    const x20 = xScale(20);
-    const x80 = xScale(80);
-    const y20 = yScale(20);
-    const y80 = yScale(80);
-
-    return (
-      <g>
-        {/* Upper-left triangle: bio age > chrono age = faster aging (light red) */}
-        <polygon
-          points={`${x20},${y80} ${x80},${y80} ${x20},${y20}`}
-          fill="#bc2c1a"
-          opacity={0.08}
-        />
-        {/* Lower-right triangle: bio age < chrono age = slower aging (light green) */}
-        <polygon
-          points={`${x20},${y20} ${x80},${y20} ${x80},${y80}`}
-          fill="#436436"
-          opacity={0.10}
-        />
-        {/* Zone labels inside the chart */}
-        <text
-          x={x20 + 8}
-          y={y80 + 14}
-          fill="#bc2c1a"
-          fontSize="7"
-          fontFamily="'Inter', sans-serif"
-          fontWeight="600"
-          opacity={0.7}
-          style={{ textTransform: 'uppercase', letterSpacing: '0.06em' }}
-        >
-          Faster aging
-        </text>
-        <text
-          x={x80 - 72}
-          y={y20 - 6}
-          fill="#436436"
-          fontSize="7"
-          fontFamily="'Inter', sans-serif"
-          fontWeight="600"
-          opacity={0.7}
-          style={{ textTransform: 'uppercase', letterSpacing: '0.06em' }}
-        >
-          Slower aging
-        </text>
-      </g>
-    );
-  };
+  // Build stepped ReferenceArea bands to approximate the diagonal split.
+  // For each 5-unit step along x, we shade:
+  //   - GREEN below the diagonal (y from 20 up to x)
+  //   - RED above the diagonal (y from x up to 80)
+  const steps = [20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75];
+  const stepSize = 5;
 
   return (
     <div className="bio-age-chart-frame">
@@ -79,12 +30,12 @@ export default function BioAgeScatterPlot({ chronologicalAge, biologicalAge }: B
         <div className="bio-age-chart-plot">
           <ResponsiveContainer width="100%" height="100%" minHeight={480}>
             <ScatterChart margin={{ top: 8, right: 8, bottom: 40, left: 44 }}>
-              <Customized component={QuadrantOverlay} />
               <CartesianGrid
                 strokeDasharray="none"
                 stroke="#e0e0de"
                 strokeWidth={0.5}
               />
+
               <XAxis
                 type="number"
                 dataKey="chronoAge"
@@ -140,6 +91,76 @@ export default function BioAgeScatterPlot({ chronologicalAge, biologicalAge }: B
                 }}
                 stroke="#3d3d3d"
                 strokeWidth={1}
+              />
+
+              {/* Stepped zone fills approximating the diagonal split */}
+              {steps.map((x) => (
+                <React.Fragment key={x}>
+                  {/* Green zone: below diagonal (bio age < chrono age = slower aging) */}
+                  <ReferenceArea
+                    x1={x}
+                    x2={x + stepSize}
+                    y1={20}
+                    y2={x + stepSize}
+                    fill="#436436"
+                    fillOpacity={0.07}
+                    stroke="none"
+                    ifOverflow="hidden"
+                  />
+                  {/* Red zone: above diagonal (bio age > chrono age = faster aging) */}
+                  <ReferenceArea
+                    x1={x}
+                    x2={x + stepSize}
+                    y1={x}
+                    y2={80}
+                    fill="#bc2c1a"
+                    fillOpacity={0.06}
+                    stroke="none"
+                    ifOverflow="hidden"
+                  />
+                </React.Fragment>
+              ))}
+
+              {/* Zone labels */}
+              <ReferenceArea
+                x1={22}
+                x2={38}
+                y1={72}
+                y2={78}
+                fill="transparent"
+                stroke="none"
+                label={{
+                  value: 'FASTER AGING',
+                  position: 'center',
+                  style: {
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: 7,
+                    fontWeight: 600,
+                    fill: '#bc2c1a',
+                    letterSpacing: '0.06em',
+                    opacity: 0.8
+                  }
+                }}
+              />
+              <ReferenceArea
+                x1={62}
+                x2={78}
+                y1={22}
+                y2={28}
+                fill="transparent"
+                stroke="none"
+                label={{
+                  value: 'SLOWER AGING',
+                  position: 'center',
+                  style: {
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: 7,
+                    fontWeight: 600,
+                    fill: '#436436',
+                    letterSpacing: '0.06em',
+                    opacity: 0.8
+                  }
+                }}
               />
 
               {/* Baseline diagonal line */}
